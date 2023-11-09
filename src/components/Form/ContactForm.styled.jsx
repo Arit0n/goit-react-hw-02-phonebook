@@ -9,6 +9,7 @@ export const StyledForm = styled(Form)`
   width: 300px;
 `;
 export const Label = styled.label``;
+
 export const StyledField = styled(Field)`
   max-width: 120px;
   margin-top: 10px;

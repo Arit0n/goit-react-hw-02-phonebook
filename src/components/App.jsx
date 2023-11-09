@@ -20,11 +20,13 @@ export class App extends Component {
     name: '',
     number: '',
   };
+
   updateFilter = filterValue => {
     this.setState(prevState => {
       return { filter: filterValue };
     });
   };
+
   updateContacts = values => {
     if (
       this.state.contacts.some(
@@ -41,6 +43,7 @@ export class App extends Component {
       });
     }
   };
+
   deleteContact = id => {
     this.setState(pervState => {
       return {
@@ -48,6 +51,7 @@ export class App extends Component {
       };
     });
   };
+  
   render() {
     const visibleNames = this.state.contacts.filter(item => {
       const hasNames = item.name

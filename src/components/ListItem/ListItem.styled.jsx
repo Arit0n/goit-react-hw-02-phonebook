@@ -6,6 +6,7 @@ export const Item = styled.li`
   align-items: center;
   justify-content: space-between;
 `;
+
 export const Button = styled.button`
   display: block;
   font-size: 10px;
