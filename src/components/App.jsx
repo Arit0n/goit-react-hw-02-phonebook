@@ -1,5 +1,4 @@
-// import { Component } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import { ContactForm } from './Form/ContactForm';
@@ -50,6 +49,19 @@ export const App = () => {
 
     return hasNames;
   });
+
+  useEffect(() => {
+    const localContact = localStorage.getItem('contact');
+    const parseContact = JSON.parse(localContact);
+
+    if (parseContact) {
+      setContacts(parseContact);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contact', JSON.stringify(contacts));
+  }, [contacts]);
 
   return (
     <Box>
