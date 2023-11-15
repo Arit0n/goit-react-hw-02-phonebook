@@ -1,4 +1,5 @@
-import { Component } from 'react';
+// import { Component } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import { ContactForm } from './Form/ContactForm';
@@ -8,28 +9,22 @@ import { Filter } from './Filter/Filter';
 import { GlobalStyle } from './GlobalStyle';
 import { Box } from './Form/ContactForm.styled';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
-      { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
-      { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
-      { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-    name: '',
-    number: '',
+export const App = () => {
+  const [contacts, setContacts] = useState([
+    { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
+    { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
+    { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
+    { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
+  ]);
+  const [filter, setFilter] = useState('');
+
+  const updateFilter = filterValue => {
+    return setFilter(filterValue);
   };
 
-  updateFilter = filterValue => {
-    this.setState(prevState => {
-      return { filter: filterValue };
-    });
-  };
-
-  updateContacts = values => {
+  const updateContacts = values => {
     if (
-      this.state.contacts.some(
+      contacts.some(
         value =>
           value.name.toLocaleLowerCase() === values.name.toLocaleLowerCase()
       )
@@ -38,37 +33,47 @@ export class App extends Component {
     } else {
       const list = { ...values, id: nanoid() };
 
-      this.setState(prevState => {
-        return { contacts: [...prevState.contacts, list] };
+      setContacts(prevState => {
+        return [...prevState, list];
       });
     }
   };
 
-  deleteContact = id => {
-    this.setState(pervState => {
-      return {
-        contacts: pervState.contacts.filter(contact => contact.id !== id),
-      };
+  const deleteContact = id => {
+    setContacts(pervState => {
+      return pervState.filter(contact => contact.id !== id);
     });
   };
-  
-  render() {
-    const visibleNames = this.state.contacts.filter(item => {
-      const hasNames = item.name
-        .toLowerCase()
-        .includes(this.state.filter.toLowerCase());
 
-      return hasNames;
-    });
-    return (
-      <Box>
-        <h2>Phonebook</h2>
-        <ContactForm onAdd={this.updateContacts} />
-        <h2>Contacts</h2>
-        <Filter filter={this.state.filter} updateFilter={this.updateFilter} />
-        <ContactList onDelete={this.deleteContact} contacts={visibleNames} />
-        <GlobalStyle />
-      </Box>
-    );
-  }
-}
+  const visibleNames = contacts.filter(item => {
+    const hasNames = item.name.toLowerCase().includes(filter.toLowerCase());
+
+    return hasNames;
+  });
+
+  return (
+    <Box>
+      <h2>Phonebook</h2>
+      <ContactForm onAdd={updateContacts} />
+      <h2>Contacts</h2>
+      <Filter filter={filter} updateFilter={updateFilter} />
+      <ContactList onDelete={deleteContact} contacts={visibleNames} />
+      <GlobalStyle />
+    </Box>
+  );
+};
+
+//   render() {
+
+// return (
+//   <Box>
+//     <h2>Phonebook</h2>
+//     <ContactForm onAdd={this.updateContacts} />
+//     <h2>Contacts</h2>
+//     <Filter filter={this.state.filter} updateFilter={this.updateFilter} />
+//     <ContactList onDelete={this.deleteContact} contacts={visibleNames} />
+//     <GlobalStyle />
+//   </Box>
+// );
+//   }
+// }
